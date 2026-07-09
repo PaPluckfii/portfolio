@@ -99,13 +99,47 @@
       <div class="phone-camera"></div>
       <div class="phone-screen">
         <div class="statusbar"><span id="clock">12:00</span><span class="statusbar-icons">▲ ▮ ▰</span></div>
-        <div class="homescreen" id="homescreen">
+        <div class="homescreen pscreen active" id="homescreen" data-screen="home">
           <div class="home-clock" id="home-clock">12:00</div>
           <div class="home-date" id="home-date">Wed, Jul 9</div>
           <button class="drawer-handle" id="drawer-open" aria-expanded="false" aria-controls="drawer">
             <span class="drawer-chevron">⌃</span> swipe up
           </button>
         </div>
+
+        <div class="pscreen" data-screen="projects" id="pscreen-projects"></div>
+
+        <div class="pscreen" data-screen="skills">
+          <div class="papp-bar">Skills</div>
+          <div class="papp-body">
+            <div class="pchips">
+              <span>Kotlin</span><span>Java</span><span>Jetpack Compose</span><span>Compose Multiplatform</span>
+              <span>KMM</span><span>Ktor</span><span>MVVM</span><span>MVI</span><span>Clean Architecture</span>
+              <span>Multi-module</span><span>Room</span><span>SQLDelight</span><span>Retrofit</span>
+              <span>Hilt / Koin</span><span>Coroutines</span><span>Firebase</span><span>MCP</span><span>Agentic Workflows</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pscreen" data-screen="experience">
+          <div class="papp-bar">Notifications</div>
+          <div class="papp-body">
+            <div class="pnotif"><b>DVL Systems · Zebpay</b><span>SDE 2 — KMM → CMP migration, 70%+ shared code</span></div>
+            <div class="pnotif"><b>Nickelfox · Vantero</b><span>SDE 2 — multi-module re-architecture, 90%+ defects cut</span></div>
+            <div class="pnotif"><b>Nickelfox · Innoviti</b><span>Enterprise Android POS apps</span></div>
+            <div class="pnotif"><b>Nickelfox · IFSTA</b><span>13+ apps, 100K+ downloads</span></div>
+          </div>
+        </div>
+
+        <div class="pscreen" data-screen="contact">
+          <div class="papp-bar">Contacts</div>
+          <div class="papp-body">
+            <a class="pcontact" href="mailto:sumeet.ad.das@gmail.com">✉&nbsp; sumeet.ad.das@gmail.com</a>
+            <a class="pcontact" href="https://github.com/PaPluckfii" target="_blank" rel="noopener">⌥&nbsp; github.com/PaPluckfii</a>
+            <a class="pcontact" href="https://linkedin.com/in/sumeetdas1996" target="_blank" rel="noopener">in&nbsp; linkedin.com/in/sumeetdas1996</a>
+          </div>
+        </div>
+
         <div class="drawer" id="drawer" role="dialog" aria-label="App drawer">
           <div class="drawer-search">Search apps…</div>
           <div class="drawer-grid" id="drawer-grid"></div>
