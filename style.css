@@ -184,10 +184,11 @@ body.js .fallback-grid { display: none; }
 }
 
 @media (max-width: 860px) {
-  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero { min-height: auto; }
   .nav-links { gap: 4px 14px; font-size: 14px; }
   .layout { display: block; }
   .phone-col { padding: 0; }
+  /* must stay after base .phone-wrap rule (source order) to win over position: sticky */
   .phone-wrap { position: fixed; top: auto; bottom: 16px; right: 16px; z-index: 5; pointer-events: none; }
   .phone-wrap .phone { width: min(140px, 32vw); pointer-events: auto; }
 }
