@@ -21,6 +21,7 @@
   </nav>
 </header>
 
+<div class="layout">
 <main>
   <section class="hero" id="top">
     <div class="hero-text reveal">
@@ -30,26 +31,6 @@
       Compose Multiplatform at India's first crypto exchange. A multi-module SDK powering
       13+ apps and 100K+ users.</p>
       <a class="btn-accent" href="#projects">Open the app drawer ↓</a>
-    </div>
-
-    <div class="phone-wrap reveal">
-      <div class="phone" id="phone">
-        <div class="phone-camera"></div>
-        <div class="phone-screen">
-          <div class="statusbar"><span id="clock">12:00</span><span class="statusbar-icons">▲ ▮ ▰</span></div>
-          <div class="homescreen" id="homescreen">
-            <div class="home-clock" id="home-clock">12:00</div>
-            <div class="home-date" id="home-date">Wed, Jul 9</div>
-            <button class="drawer-handle" id="drawer-open" aria-expanded="false" aria-controls="drawer">
-              <span class="drawer-chevron">⌃</span> swipe up
-            </button>
-          </div>
-          <div class="drawer" id="drawer" role="dialog" aria-label="App drawer">
-            <div class="drawer-search">Search apps…</div>
-            <div class="drawer-grid" id="drawer-grid"></div>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -111,6 +92,29 @@
     </div>
   </section>
 </main>
+
+<aside class="phone-col">
+  <div class="phone-wrap reveal">
+    <div class="phone" id="phone">
+      <div class="phone-camera"></div>
+      <div class="phone-screen">
+        <div class="statusbar"><span id="clock">12:00</span><span class="statusbar-icons">▲ ▮ ▰</span></div>
+        <div class="homescreen" id="homescreen">
+          <div class="home-clock" id="home-clock">12:00</div>
+          <div class="home-date" id="home-date">Wed, Jul 9</div>
+          <button class="drawer-handle" id="drawer-open" aria-expanded="false" aria-controls="drawer">
+            <span class="drawer-chevron">⌃</span> swipe up
+          </button>
+        </div>
+        <div class="drawer" id="drawer" role="dialog" aria-label="App drawer">
+          <div class="drawer-search">Search apps…</div>
+          <div class="drawer-grid" id="drawer-grid"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
+</div>
 
 <footer class="footer">Noida, India · Built with plain HTML, CSS & JS</footer>
 <script src="app.js"></script>
