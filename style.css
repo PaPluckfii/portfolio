@@ -71,19 +71,47 @@ h1 { font-size: clamp(48px, 8vw, 96px); line-height: 1.02; }
 
 /* contact + footer */
 .contact-links { display: flex; flex-direction: column; gap: 12px; font-size: clamp(18px, 3vw, 28px); }
-.contact-links a { text-decoration: none; color: var(--muted); transition: color .2s; }
-.contact-links a:hover { color: var(--accent); }
+.contact-links a { text-decoration: none; color: var(--muted); transition: color .2s, transform .25s cubic-bezier(.2, .9, .3, 1.2); }
+.contact-links a:hover { color: var(--accent); transform: translateX(8px); }
 .footer { padding: 32px 6vw; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
 
-/* scroll reveal */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-.reveal.in { opacity: 1; transform: none; }
-/* stagger rows inside grids */
-.skill-group.reveal, .notif.reveal { transition-delay: var(--d, 0s); }
+/* scroll reveal — springy */
+.reveal { opacity: 0; }
+.reveal.in { animation: springIn .6s cubic-bezier(.2, .9, .3, 1.15) both; animation-delay: var(--d, 0s); }
+@keyframes springIn {
+  from { opacity: 0; transform: translateY(28px) scale(.96); }
+  60%  { opacity: 1; transform: translateY(-4px) scale(1.01); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* bento hover lift */
+.skill-group, .notif, .app-detail {
+  transition: transform .25s cubic-bezier(.2, .9, .3, 1.2), box-shadow .25s ease;
+}
+.skill-group:hover, .notif:hover { transform: translateY(-6px) rotate(-1deg) scale(1.02); box-shadow: 0 16px 32px #0008; }
+.app-detail:hover { transform: translateY(-4px); box-shadow: 0 16px 32px #0008; }
+
+/* rotating glow border on active app card */
+@property --ga { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+#app-detail { position: relative; }
+#app-detail::before {
+  content: ""; position: absolute; inset: 0; border-radius: var(--r-lg); padding: 1px;
+  background: conic-gradient(from var(--ga), var(--accent), transparent 25%, transparent 75%, var(--accent));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: glowspin 3s linear infinite;
+  pointer-events: none;
+}
+@keyframes glowspin { to { --ga: 360deg; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
+  .reveal, .reveal.in { opacity: 1; transform: none; animation: none; }
   html { scroll-behavior: auto; }
+  .skill-group, .notif, .app-detail, .contact-links a { transition: none; }
+  .skill-group:hover, .notif:hover, .app-detail:hover, .contact-links a:hover { transform: none; box-shadow: none; }
+  #app-detail::before { animation: none; }
+  .pscreen { transition: none; }
 }
 /* ---- phone ---- */
 .phone-wrap {
