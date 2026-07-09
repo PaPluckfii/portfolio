@@ -75,19 +75,35 @@ function detailHTML(app) {
 
 const grid = $("#drawer-grid");
 const detail = $("#app-detail");
+const pscreenProjects = $("#pscreen-projects");
+
+function phoneAppHTML(app) {
+  return `
+    <div class="papp-bar">${app.name}</div>
+    <div class="papp-body">
+      <div class="glyph" style="background:${app.color}">${app.letter}</div>
+      <b>${app.name}</b>
+      <span class="prole">${app.role}</span>
+      <div class="pmetrics">${app.metrics.map(([b, s]) => `<div><b>${b}</b><span>${s}</span></div>`).join("")}</div>
+    </div>`;
+}
+
+function showApp(app, scroll = false) {
+  detail.hidden = false;
+  detail.innerHTML = detailHTML(app);
+  pscreenProjects.innerHTML = phoneAppHTML(app);
+  // restart launch animation
+  detail.style.animation = "none";
+  void detail.offsetWidth;
+  detail.style.animation = "";
+  if (scroll) document.getElementById("projects").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
 for (const app of APPS) {
   const btn = document.createElement("button");
   btn.className = "app-icon";
   btn.innerHTML = `<span class="glyph" style="background:${app.color}">${app.letter}</span>${app.name}`;
-  btn.addEventListener("click", () => {
-    detail.hidden = false;
-    detail.innerHTML = detailHTML(app);
-    // restart launch animation
-    detail.style.animation = "none";
-    void detail.offsetWidth;
-    detail.style.animation = "";
-    document.getElementById("projects").scrollIntoView({ behavior: "smooth", block: "start" });
-  });
+  btn.addEventListener("click", () => showApp(app, true));
   grid.appendChild(btn);
 }
 
@@ -97,8 +113,7 @@ $("#projects-fallback").innerHTML = APPS
   .join("");
 
 // show first app by default so #projects isn't empty
-detail.hidden = false;
-detail.innerHTML = detailHTML(APPS[0]);
+showApp(APPS[0]);
 
 // ---- scroll reveal (stagger siblings) ----
 const io = new IntersectionObserver((entries) => {
@@ -119,3 +134,19 @@ addEventListener("scroll", () => {
     phone.style.setProperty("--tilt", Math.min(scrollY / 600, 1).toFixed(3));
   });
 }, { passive: true });
+
+// ---- two-way sync: page section -> phone screen ----
+const SCREEN_FOR = { top: "home", projects: "projects", skills: "skills", experience: "experience", contact: "contact" };
+
+function setScreen(name) {
+  document.querySelectorAll(".pscreen").forEach((s) =>
+    s.classList.toggle("active", s.dataset.screen === name));
+}
+
+const sectionIO = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (e.isIntersecting && SCREEN_FOR[e.target.id]) setScreen(SCREEN_FOR[e.target.id]);
+  }
+}, { rootMargin: "-45% 0px -45% 0px" }); // fires when section crosses viewport center
+
+document.querySelectorAll("main section[id]").forEach((s) => sectionIO.observe(s));
