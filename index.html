@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sumeet Das — Kotlin/Android Developer</title>
+<meta name="description" content="Senior Android/KMM developer. 4.8 years building fintech and ed-tech apps. Compose Multiplatform, Kotlin, 100K+ users.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="nav">
+  <span class="nav-brand">sumeet.das</span>
+  <nav class="nav-links">
+    <a href="#projects">Apps</a>
+    <a href="#skills">Skills</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="top">
+    <div class="hero-text reveal">
+      <p class="eyebrow">Senior Android / KMM Developer</p>
+      <h1>Sumeet<br>Das</h1>
+      <p class="hero-sub">4.8 years building enterprise-grade apps across fintech and ed-tech.
+      Compose Multiplatform at India's first crypto exchange. A multi-module SDK powering
+      13+ apps and 100K+ users.</p>
+      <a class="btn-accent" href="#projects">Open the app drawer ↓</a>
+    </div>
+
+    <div class="phone-wrap reveal">
+      <div class="phone" id="phone">
+        <div class="phone-camera"></div>
+        <div class="phone-screen">
+          <div class="statusbar"><span id="clock">12:00</span><span class="statusbar-icons">▲ ▮ ▰</span></div>
+          <div class="homescreen" id="homescreen">
+            <div class="home-clock" id="home-clock">12:00</div>
+            <div class="home-date" id="home-date">Wed, Jul 9</div>
+            <button class="drawer-handle" id="drawer-open" aria-expanded="false" aria-controls="drawer">
+              <span class="drawer-chevron">⌃</span> swipe up
+            </button>
+          </div>
+          <div class="drawer" id="drawer" role="dialog" aria-label="App drawer">
+            <div class="drawer-search">Search apps…</div>
+            <div class="drawer-grid" id="drawer-grid"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <h2 class="reveal">Apps</h2>
+    <p class="section-sub reveal">Tap an icon in the drawer — or browse below.</p>
+    <div class="app-detail" id="app-detail" hidden></div>
+    <div id="projects-fallback" class="fallback-grid"></div>
+  </section>
+
+  <section class="section" id="skills">
+    <h2 class="reveal">Skills</h2>
+    <div class="skill-groups">
+      <div class="skill-group reveal"><h3>Languages</h3><div class="chips"><span>Kotlin</span><span>Java</span><span>XML</span></div></div>
+      <div class="skill-group reveal"><h3>UI</h3><div class="chips"><span>Jetpack Compose</span><span>Compose Multiplatform</span><span>Android SDK</span><span>XML Layouts</span></div></div>
+      <div class="skill-group reveal"><h3>Architecture</h3><div class="chips"><span>MVVM</span><span>MVI</span><span>Clean Architecture</span><span>Multi-module</span></div></div>
+      <div class="skill-group reveal"><h3>Multiplatform</h3><div class="chips"><span>KMM</span><span>CMP</span><span>Ktor</span></div></div>
+      <div class="skill-group reveal"><h3>Data & Network</h3><div class="chips"><span>Room</span><span>SQLDelight</span><span>SQLite</span><span>MongoDB</span><span>Retrofit</span><span>Ktor Client</span><span>REST</span></div></div>
+      <div class="skill-group reveal"><h3>Tools & Practice</h3><div class="chips"><span>Hilt / Koin</span><span>Coroutines</span><span>JUnit</span><span>Espresso</span><span>Git</span><span>GitHub Packages</span><span>Firebase</span><span>Agile</span></div></div>
+      <div class="skill-group reveal"><h3>AI & Dev Tools</h3><div class="chips"><span>MCP</span><span>Figma Connect</span><span>GSD</span><span>Agentic Workflows</span></div></div>
+    </div>
+  </section>
+
+  <section class="section" id="experience">
+    <h2 class="reveal">Experience</h2>
+    <div class="notif-stack">
+      <article class="notif reveal">
+        <div class="notif-head"><span class="notif-app">DVL Systems · Zebpay</span><span class="notif-time">Oct 2025 – Apr 2026</span></div>
+        <h3>SDE 2 — India's first crypto exchange</h3>
+        <p>End-to-end KMM → Compose Multiplatform migration sharing 70%+ of the codebase across Android/iOS.
+        Pioneered agentic dev workflows (MCP, Figma Connect, GSD) cutting design-to-code handoff time by 30%.</p>
+      </article>
+      <article class="notif reveal">
+        <div class="notif-head"><span class="notif-app">Nickelfox · Vantero</span><span class="notif-time">Aug 2021 – Oct 2025</span></div>
+        <h3>SDE 2 — DM Ventures LLC</h3>
+        <p>Multi-module re-architecture prepping full CMP migration. Led 'Target Zero Bugs' — 90%+ defects
+        eliminated via developer-driven testing. Managed a dev team; shipped custom animated features.</p>
+      </article>
+      <article class="notif reveal">
+        <div class="notif-head"><span class="notif-app">Nickelfox · Innoviti</span><span class="notif-time">POS Apps</span></div>
+        <h3>Enterprise Android POS</h3>
+        <p>Secure payment transaction apps for retail clients. Backend integration with Node.js and FreshDesk APIs.</p>
+      </article>
+      <article class="notif reveal">
+        <div class="notif-head"><span class="notif-app">Nickelfox · IFSTA</span><span class="notif-time">Oklahoma State University</span></div>
+        <h3>13+ Android apps, 100K+ downloads</h3>
+        <p>Flagship Essentials 7th Edition hit 100K+ Play Store downloads. Multi-module SDK via GitHub Packages
+        cut dev time 70% across 13+ projects. Led a cross-functional team.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <h2 class="reveal">Contact</h2>
+    <div class="contact-links reveal">
+      <a href="mailto:sumeet.ad.das@gmail.com">sumeet.ad.das@gmail.com</a>
+      <a href="https://github.com/PaPluckfii" target="_blank" rel="noopener">github.com/PaPluckfii</a>
+      <a href="https://linkedin.com/in/sumeetdas1996" target="_blank" rel="noopener">linkedin.com/in/sumeetdas1996</a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">Noida, India · Built with plain HTML, CSS & JS</footer>
+<script src="app.js"></script>
+</body>
+</html>
