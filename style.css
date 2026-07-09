@@ -77,7 +77,14 @@ h1 { font-size: clamp(48px, 8vw, 96px); line-height: 1.02; }
 
 /* scroll reveal — springy */
 .reveal { opacity: 0; }
-.reveal.in { animation: springIn .6s cubic-bezier(.2, .9, .3, 1.15) both; animation-delay: var(--d, 0s); }
+/* opacity/transform set as normal (non-animation) rules so hover transforms
+   can win the cascade once the entrance animation finishes; fill-mode
+   "backwards" only holds the pre-animation frame during animation-delay */
+.reveal.in {
+  opacity: 1; transform: none;
+  animation: springIn .6s cubic-bezier(.2, .9, .3, 1.15) backwards;
+  animation-delay: var(--d, 0s);
+}
 @keyframes springIn {
   from { opacity: 0; transform: translateY(28px) scale(.96); }
   60%  { opacity: 1; transform: translateY(-4px) scale(1.01); }
@@ -91,7 +98,9 @@ h1 { font-size: clamp(48px, 8vw, 96px); line-height: 1.02; }
 .skill-group:hover, .notif:hover { transform: translateY(-6px) rotate(-1deg) scale(1.02); box-shadow: 0 16px 32px #0008; }
 .app-detail:hover { transform: translateY(-4px); box-shadow: 0 16px 32px #0008; }
 
-/* rotating glow border on active app card */
+/* rotating glow border on active app card: --ga is a registered custom
+   property so animating it rotates the conic-gradient; the double mask with
+   mask-composite: exclude cuts a 1px ring so only the edge shows */
 @property --ga { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
 #app-detail { position: relative; }
 #app-detail::before {
