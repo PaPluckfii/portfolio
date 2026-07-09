@@ -141,6 +141,9 @@ const SCREEN_FOR = { top: "home", projects: "projects", skills: "skills", experi
 function setScreen(name) {
   document.querySelectorAll(".pscreen").forEach((s) =>
     s.classList.toggle("active", s.dataset.screen === name));
+  const projectsOpen = name === "projects";
+  drawer.classList.toggle("open", projectsOpen);
+  openBtn.setAttribute("aria-expanded", projectsOpen);
 }
 
 const sectionIO = new IntersectionObserver((entries) => {
