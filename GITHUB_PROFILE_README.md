@@ -6,7 +6,7 @@
 
 [![Email](https://img.shields.io/badge/EMAIL-101418?style=for-the-badge&logo=gmail&logoColor=3DDC84)](mailto:sumeet.ad.das@gmail.com)
 [![LinkedIn](https://img.shields.io/badge/LINKEDIN-101418?style=for-the-badge&logo=linkedin&logoColor=3DDC84)](https://linkedin.com/in/sumeetdas1996)
-[![Résumé](https://img.shields.io/badge/R%C3%89SUM%C3%89-101418?style=for-the-badge&logo=googledrive&logoColor=3DDC84)](https://drive.google.com/file/d/1k2j5Pd_lu4rKK5k8Kx-tWNMldzEtZMZ1/view)
+[![Résumé](https://img.shields.io/badge/R%C3%89SUM%C3%89-101418?style=for-the-badge&logo=googledrive&logoColor=3DDC84)](https://drive.google.com/file/d/1k2j5Pd_lu4rKK5k8Kx-tWNMldzEtZMZ1/view?usp=sharing)
 
 </div>
 
@@ -93,8 +93,6 @@ ALSO  → Agentic workflows, MCP, and practical AI-assisted engineering
 
 ### `contact.dock`
 
-[Email](mailto:sumeet.ad.das@gmail.com) · [LinkedIn](https://linkedin.com/in/sumeetdas1996) · [Stack Overflow](https://stackoverflow.com/users/15420804/sumeet-das) · [Résumé](https://drive.google.com/file/d/1k2j5Pd_lu4rKK5k8Kx-tWNMldzEtZMZ1/view)
-
-**Build for scale. Share what matters. Deliver with confidence.**
+[Email](mailto:sumeet.ad.das@gmail.com) · [LinkedIn](https://linkedin.com/in/sumeetdas1996) · [Stack Overflow](https://stackoverflow.com/users/15420804/sumeet-das) · [Résumé](https://drive.google.com/file/d/1k2j5Pd_lu4rKK5k8Kx-tWNMldzEtZMZ1/view?usp=sharing)
 
 </div>
