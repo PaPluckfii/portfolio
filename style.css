@@ -213,6 +213,11 @@ body:not(.js) .reveal { opacity: 1; }
   background: #ffffff14; border-radius: 40px; padding: 8px 16px;
   font-size: 13px; color: #fff8; margin-bottom: 20px;
 }
+.drawer-hint {
+  margin: -10px 0 16px; color: var(--accent); text-align: center; font-size: 12px;
+  animation: hintFade 4s ease forwards;
+}
+@keyframes hintFade { 0%, 70% { opacity: 1; } 100% { opacity: 0; } }
 .drawer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px 8px; }
 .app-icon {
   background: none; border: none; cursor: pointer; color: #fffd;
@@ -253,6 +258,7 @@ body.js .fallback-grid { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .drawer { transition: none; }
+  .drawer-hint { animation: none; }
   .app-detail { animation: none; }
   .drawer-chevron { animation: none; }
 }

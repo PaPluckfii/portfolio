@@ -56,6 +56,20 @@ setInterval(tick, 30_000);
 // ---- drawer ----
 const drawer = $("#drawer");
 const openBtn = $("#drawer-open");
+const projectHint = $("#project-hint");
+let projectHintShown = false;
+
+function showProjectHint() {
+  if (projectHintShown) return;
+  projectHintShown = true;
+  try {
+    if (localStorage.getItem("projectHintSeen")) return;
+    localStorage.setItem("projectHintSeen", "1");
+  } catch {}
+  projectHint.hidden = false;
+  setTimeout(() => { projectHint.hidden = true; }, 4_000);
+}
+
 openBtn.addEventListener("click", () => {
   const open = drawer.classList.toggle("open");
   openBtn.setAttribute("aria-expanded", open);
@@ -144,6 +158,7 @@ function setScreen(name) {
   const projectsOpen = name === "projects";
   drawer.classList.toggle("open", projectsOpen);
   openBtn.setAttribute("aria-expanded", projectsOpen);
+  if (projectsOpen) showProjectHint();
 }
 
 const sectionIO = new IntersectionObserver((entries) => {
