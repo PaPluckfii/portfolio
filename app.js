@@ -25,18 +25,11 @@ const APPS = [
     metrics: [["Enterprise", "retail clients"]],
   },
   {
-    id: "ifsta-e7", name: "Essentials 7th Ed", letter: "E", color: "#e57373",
-    role: "Lead Developer · IFSTA / Oklahoma State", store: null,
-    desc: "Flagship IFSTA companion app: exam prep, audiobooks, identification modules, skill videos and course content for firefighter training.",
-    stack: ["Kotlin", "Java", "Room", "Retrofit", "Multi-module SDK"],
-    metrics: [["100K+", "Play Store downloads"]],
-  },
-  {
     id: "ifsta-sdk", name: "IFSTA Suite", letter: "13+", color: "#ba68c8",
     role: "Lead Developer · IFSTA / Oklahoma State", store: null,
-    desc: "13+ companion apps built on a shared multi-module SDK distributed via GitHub Packages — one architecture, many books.",
+    desc: "13+ companion apps built on a shared multi-module SDK distributed via GitHub Packages. Flagship Essentials 7th Edition reached 100K+ downloads with exam prep, audiobooks, identification modules, skill videos and firefighter-training course content.",
     stack: ["Kotlin", "GitHub Packages", "Clean Architecture", "SQLite"],
-    metrics: [["70%", "dev time saved per app"], ["13+", "apps shipped"]],
+    metrics: [["100K+", "Essentials 7th Ed downloads"], ["70%", "dev time saved per app"], ["13+", "apps shipped"]],
   },
 ];
 
