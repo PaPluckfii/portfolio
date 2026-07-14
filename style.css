@@ -283,4 +283,8 @@ body.js .fallback-grid { display: none; }
   /* must stay after base .phone-wrap rule (source order) to win over position: sticky */
   .phone-wrap { position: fixed; top: auto; bottom: 16px; right: 16px; z-index: 5; pointer-events: none; }
   .phone-wrap .phone { width: min(140px, 32vw); pointer-events: auto; }
+  .pscreen[data-screen="experience"] {
+    width: 185.1852%; height: 185.1852%;
+    transform: scale(.54); transform-origin: top left;
+  }
 }
