@@ -49,3 +49,12 @@ test("phone skill grid declares animation, fallback, and narrow layout hooks", (
   assert.match(css, /@media \(max-width:\s*860px\)[\s\S]*\.pscreen\[data-screen="skills"\] \.pskill-icon/);
   assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.pskill-label[\s\S]*animation:\s*none/);
 });
+
+test("narrow phone Skills screen reserves float clearance above the first row", () => {
+  const topPadding = css.match(
+    /@media \(max-width:\s*860px\)[\s\S]*?\.pscreen\[data-screen="skills"\] \.papp-body\s*\{\s*padding:\s*([\d.]+)px/s
+  )?.[1];
+
+  assert.ok(topPadding, "narrow Skills body top padding");
+  assert.ok(Number(topPadding) >= 8, "narrow Skills body has at least 8px top clearance");
+});

@@ -315,7 +315,7 @@ body.js .fallback-grid { display: none; }
   /* must stay after base .phone-wrap rule (source order) to win over position: sticky */
   .phone-wrap { position: fixed; top: auto; bottom: 16px; right: 16px; z-index: 5; pointer-events: none; }
   .phone-wrap .phone { width: clamp(125px, 32vw, 140px); pointer-events: auto; }
-  .pscreen[data-screen="skills"] .papp-body { padding: 6px 7px; }
+  .pscreen[data-screen="skills"] .papp-body { padding: 8px 7px 6px; }
   .pscreen[data-screen="skills"] .pskills-grid { gap: 4px 2px; }
   .pscreen[data-screen="skills"] .pskill { gap: 1px; }
   .pscreen[data-screen="skills"] .pskill-icon { width: 24px; height: 24px; border-radius: 7px; box-shadow: none; }
