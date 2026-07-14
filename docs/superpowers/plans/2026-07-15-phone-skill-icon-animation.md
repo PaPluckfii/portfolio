@@ -256,7 +256,16 @@ Stop the server with `Ctrl-C` after verification.
 - [ ] **Step 9: Commit the implementation**
 
 ```bash
-git add index.html style.css tests/phone-skills.test.mjs assets/skills
+git add tests/phone-skills.test.mjs assets/skills
+git add -p index.html style.css
+git diff --cached --check
+git diff --cached -- index.html style.css
 git commit -m "feat: animate phone skill icons"
 ```
 
+At each `git add -p` prompt, stage only hunks containing `.pskills-grid`,
+`.pskill`, `.pskill-icon`, `.pskill-mark`, `.pskill-label`, `pskillFloat`, or
+`pskillSpotlight`. Leave every pre-existing unrelated hunk unstaged. Before
+committing, the cached diff must contain the phone Skills markup and its CSS,
+but none of the pre-existing collage, project drawer, contact, footer, tilt, or
+experience edits.
