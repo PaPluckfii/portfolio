@@ -282,7 +282,7 @@ body.js .fallback-grid { display: none; }
   .phone-col { padding: 0; }
   /* must stay after base .phone-wrap rule (source order) to win over position: sticky */
   .phone-wrap { position: fixed; top: auto; bottom: 16px; right: 16px; z-index: 5; pointer-events: none; }
-  .phone-wrap .phone { width: min(140px, 32vw); pointer-events: auto; }
+  .phone-wrap .phone { width: clamp(125px, 32vw, 140px); pointer-events: auto; }
   .pscreen[data-screen="experience"] .papp-body { padding: 3px 8px; gap: 2px; }
   .pscreen[data-screen="experience"] .pnotif { padding: 4px 6px; gap: 1px; border-radius: 8px; }
   .pscreen[data-screen="experience"] .pnotif-title { gap: 4px; margin-bottom: 1px; }
