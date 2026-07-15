@@ -80,12 +80,9 @@ ALSO  → Agentic workflows, MCP, and practical AI-assisted engineering
 
 ## `github.telemetry`
 
-<div align="center">
+**Most-used repository languages:** `Kotlin` · `Java` · `HTML` · `JavaScript`
 
-![Sumeet Das's GitHub statistics](https://github-readme-stats.vercel.app/api?username=PaPluckfii&show_icons=true&hide_border=true&bg_color=101418&title_color=3DDC84&text_color=F5F7F6&icon_color=3DDC84&ring_color=3DDC84)
-![Sumeet Das's top languages](https://github-readme-stats.vercel.app/api/top-langs/?username=PaPluckfii&layout=compact&hide_border=true&bg_color=101418&title_color=3DDC84&text_color=F5F7F6)
-
-</div>
+[View my complete contribution activity on GitHub →](https://github.com/PaPluckfii)
 
 ---
 

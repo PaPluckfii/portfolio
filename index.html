@@ -39,6 +39,7 @@
     <p class="section-sub reveal">Tap an icon in the drawer — or browse below.</p>
     <div class="app-detail" id="app-detail" hidden></div>
     <div id="projects-fallback" class="fallback-grid"></div>
+    <div class="collage reveal" id="collage" aria-label="App screenshots"></div>
   </section>
 
   <section class="section" id="skills">
@@ -57,6 +58,11 @@
   <section class="section" id="experience">
     <h2 class="reveal">Experience</h2>
     <div class="notif-stack">
+      <article class="notif reveal">
+        <div class="notif-head"><span class="notif-app">Freelance</span><span class="notif-time">May 2026 – Present</span></div>
+        <h3>Independent Product Engineer</h3>
+        <p>Built and shipped SkoolOS, Solvem Grocery, and Mandir Yatra across education, grocery commerce, and pilgrimage travel.</p>
+      </article>
       <article class="notif reveal">
         <div class="notif-head"><span class="notif-app">DVL Systems · Zebpay</span><span class="notif-time">Oct 2025 – Apr 2026</span></div>
         <h3>SDE 2 — India's first crypto exchange</h3>
@@ -104,9 +110,9 @@
         <div class="homescreen pscreen active" id="homescreen" data-screen="home">
           <div class="home-clock" id="home-clock">12:00</div>
           <div class="home-date" id="home-date">Wed, Jul 9</div>
-          <button class="drawer-handle" id="drawer-open" aria-expanded="false" aria-controls="drawer">
+          <a class="drawer-handle" id="drawer-open" href="#projects" aria-expanded="false" aria-controls="drawer">
             <span class="drawer-chevron">⌃</span> swipe up
-          </button>
+          </a>
         </div>
 
         <div class="pscreen" data-screen="projects" id="pscreen-projects"></div>
@@ -140,8 +146,12 @@
 
         <!-- keep in sync with #experience .notif-stack -->
         <div class="pscreen" data-screen="experience">
-          <div class="papp-bar">Notifications</div>
+          <div class="papp-bar">Experience</div>
           <div class="papp-body">
+            <div class="pnotif">
+              <div class="pnotif-title"><b>Freelance</b></div>
+              <span>SkoolOS · Solvem Grocery · Mandir Yatra</span>
+            </div>
             <div class="pnotif">
               <div class="pnotif-title"><img src="assets/experience/zebpay-logo.jpg" alt="" width="28" height="28"><b>DVL Systems · Zebpay</b></div>
               <span>SDE 2 — KMM → CMP migration, 70%+ shared code</span>
@@ -176,7 +186,6 @@
 </aside>
 </div>
 
-<footer class="footer">Noida, India · Built with plain HTML, CSS & JS</footer>
 <script src="app.js"></script>
 </body>
 </html>

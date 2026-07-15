@@ -75,11 +75,10 @@ h1 { font-size: clamp(48px, 8vw, 96px); line-height: 1.02; }
 .notif-project-head span { color: var(--muted); font-size: 13px; text-align: right; }
 .notif-project strong { color: var(--text); }
 
-/* contact + footer */
-.contact-links { display: flex; flex-direction: column; gap: 12px; font-size: clamp(18px, 3vw, 28px); }
+/* contact */
+.contact-links { display: flex; flex-direction: column; gap: 8px; font-size: 16px; }
 .contact-links a { text-decoration: none; color: var(--muted); transition: color .2s, transform .25s cubic-bezier(.2, .9, .3, 1.2); }
 .contact-links a:hover { color: var(--accent); transform: translateX(8px); }
-.footer { padding: 32px 6vw; color: var(--muted); font-size: 13px; border-top: 1px solid var(--border); }
 
 /* scroll reveal — springy */
 .reveal { opacity: 0; }
@@ -140,7 +139,7 @@ body:not(.js) .reveal { opacity: 1; }
   background: #000; border-radius: 40px; padding: 10px;
   border: 1px solid #333;
   transition: transform .3s ease;
-  transform: rotateY(calc(var(--tilt, 0) * -6deg)) rotateX(calc(var(--tilt, 0) * 3deg));
+  transform: rotateY(calc(var(--tilt, 0) * -12deg)) rotateX(calc(var(--tilt, 0) * 6deg));
 }
 .phone-camera {
   position: absolute; top: 20px; left: 50%; transform: translateX(-50%);
@@ -235,7 +234,7 @@ body:not(.js) .reveal { opacity: 1; }
 .drawer-handle {
   position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
   background: none; border: none; color: #fffc; font: inherit; font-size: 13px;
-  cursor: pointer; display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; display: flex; flex-direction: column; align-items: center; text-decoration: none;
 }
 .drawer-chevron { animation: bob 1.6s ease-in-out infinite; }
 @keyframes bob { 50% { transform: translateY(-5px); } }
@@ -271,7 +270,7 @@ body:not(.js) .reveal { opacity: 1; }
   display: grid; place-items: center;
   font-size: 22px; font-weight: 600; color: #0a1f14;
 }
-.glyph-image { overflow: hidden; border-radius: 14px !important; background: none !important; }
+.glyph-image { overflow: hidden; border-radius: 50% !important; background: none !important; }
 .glyph-image img { width: 100%; height: 100%; display: block; object-fit: cover; }
 
 /* app detail panel */
@@ -292,6 +291,27 @@ body:not(.js) .reveal { opacity: 1; }
 .app-detail .metrics { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
 .app-detail .metric b { display: block; font-size: 22px; color: var(--text); }
 .app-detail .metric span { font-size: 13px; color: var(--muted); }
+/* collage: 4 masonry columns of all app screenshots, drifting on scroll */
+.collage { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 32px; }
+.collage-col { display: flex; flex-direction: column; gap: 12px; will-change: transform; }
+/* offset alternate columns so rows don't align even before drifting */
+.collage-col:nth-child(even) { padding-top: 40px; }
+.collage img {
+  width: 100%; display: block;
+  object-fit: cover; object-position: top;
+  border-radius: 18px; border: 1px solid var(--border);
+  transition: opacity .7s ease, transform .7s cubic-bezier(.16, 1, .3, 1);
+}
+/* entry state: fade-up, released by IntersectionObserver adding .in */
+body.js .collage img { opacity: 0; transform: translateY(28px) scale(.96); }
+body.js .collage img.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  body.js .collage img { opacity: 1; transform: none; transition: none; }
+}
+/* cycle crop heights so uniform phone shots stagger like a masonry wall */
+.collage-col img:nth-child(3n) { aspect-ratio: 9 / 16; }
+.collage-col img:nth-child(3n + 1) { aspect-ratio: 925 / 2048; }
+.collage-col img:nth-child(3n + 2) { aspect-ratio: 9 / 17; }
 
 /* no-JS fallback grid (hidden by JS) */
 .fallback-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
@@ -331,4 +351,7 @@ body.js .fallback-grid { display: none; }
   .pscreen[data-screen="experience"] .pnotif-project { padding-top: 3px; margin-top: 2px; gap: 0; }
   .pscreen[data-screen="experience"] .pnotif > span,
   .pscreen[data-screen="experience"] .pnotif-project span { display: none; }
+  .app-detail { width: 100%; padding: 24px; }
+  .collage { gap: 8px; }
+  .collage-col { gap: 8px; }
 }
