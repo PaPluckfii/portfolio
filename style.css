@@ -26,7 +26,7 @@ h1, h2, h3 { letter-spacing: -0.04em; font-weight: 600; }
 .nav-links a:hover, .nav-links a:focus-visible { color: var(--text); }
 
 /* two-column shell: content left, pinned phone right */
-.layout { display: grid; grid-template-columns: minmax(0, 1fr) 380px; }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) clamp(380px, 28vw, 665px); }
 .layout > main { min-width: 0; }
 .phone-col { padding: 48px 6vw 48px 0; }
 
@@ -136,6 +136,7 @@ body:not(.js) .reveal { opacity: 1; }
 }
 .phone {
   width: min(320px, 80vw); aspect-ratio: 9 / 19; position: relative;
+  zoom: clamp(1, min(calc(100vw / 1280px), calc((100vh - 144px) / 676px)), 1.75);
   background: #000; border-radius: 40px; padding: 10px;
   border: 1px solid #333;
   transition: transform .3s ease;
@@ -336,7 +337,7 @@ body.js .fallback-grid { display: none; }
   .phone-col { padding: 0; }
   /* must stay after base .phone-wrap rule (source order) to win over position: sticky */
   .phone-wrap { position: fixed; top: auto; bottom: 16px; right: 16px; z-index: 5; pointer-events: none; }
-  .phone-wrap .phone { width: clamp(125px, 32vw, 140px); pointer-events: auto; }
+  .phone-wrap .phone { width: clamp(125px, 32vw, 140px); zoom: 1; pointer-events: auto; }
   .pscreen[data-screen="skills"] .papp-body { padding: 8px 7px 6px; }
   .pscreen[data-screen="skills"] .pskills-grid { gap: 4px 2px; }
   .pscreen[data-screen="skills"] .pskill { gap: 1px; }
