@@ -189,6 +189,11 @@ Stop the local server after verification.
 - [ ] **Step 9: Commit the implementation**
 
 ```bash
-git add app.js style.css assets/solvem/icon.svg tests/solvem-project.test.js
+git add assets/solvem/icon.svg tests/solvem-project.test.js
+git add -p app.js style.css
+git diff --cached --check
+git diff --cached -- app.js style.css assets/solvem/icon.svg tests/solvem-project.test.js
 git commit -m "feat: add Solvem Grocery project"
 ```
+
+Stage only the Solvem-specific `app.js` and `style.css` hunks. The checkout contains unrelated user changes in those files; leave them unstaged and unchanged.
