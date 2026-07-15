@@ -17,7 +17,7 @@
 - Highlights must communicate four role-based experiences, realtime order operations, and the COD-to-settlement workflow without unverified download, delivery-time, or transaction metrics.
 - Use the existing yellow-and-charcoal Solvem launcher artwork from `/Users/apple/AndroidStudioProjects/Grocery app /docs/stitch_grocery_app_ui_overhaul/premium_harvest/solvem_launcher_icon.svg` as a local asset under `assets/solvem/`.
 - Existing apps must retain their current letter glyphs without data changes.
-- The JavaScript detail view, app drawer, phone project preview, and no-JavaScript fallback must all use the same icon-rendering path.
+- The JavaScript detail view, app drawer, and no-JavaScript fallback must all use the same icon-rendering path.
 - Do not add screenshots, a website CTA, a component abstraction, or a dependency.
 
 ---
@@ -32,7 +32,7 @@
 
 **Interfaces:**
 - Consumes: existing `APPS` objects with `letter: string` and `color: string`.
-- Produces: optional `icon: string` on an app object and `glyphHTML(app): string`, used by `detailHTML`, `phoneAppHTML`, and the drawer button renderer. Apps without `icon` receive the unchanged letter-glyph markup.
+- Produces: optional `icon: string` on an app object and `glyphHTML(app): string`, used by `detailHTML` and the drawer button renderer. Apps without `icon` receive the unchanged letter-glyph markup.
 
 - [ ] **Step 1: Write the failing source-contract tests**
 
@@ -61,7 +61,7 @@ test("defines the approved Solvem Grocery portfolio content", () => {
 test("uses one optional icon renderer while preserving letter glyphs", () => {
   assert.match(appJs, /function glyphHTML\(app\)/);
   assert.match(appJs, /if \(!app\.icon\) return `<span class="glyph" style="background:\$\{app\.color\}">\$\{app\.letter\}<\/span>`/);
-  assert.equal((appJs.match(/glyphHTML\(app\)/g) || []).length, 4);
+  assert.equal((appJs.match(/glyphHTML\(app\)/g) || []).length, 3);
   assert.match(css, /\.glyph-image\s*\{/);
   assert.match(css, /\.glyph-image img\s*\{/);
 });
@@ -140,12 +140,6 @@ Replace the glyph markup in `detailHTML(app)` with:
       ${glyphHTML(app)}
 ```
 
-Replace the glyph markup in `phoneAppHTML(app)` with:
-
-```js
-      ${glyphHTML(app)}
-```
-
 Replace the drawer button assignment with:
 
 ```js
@@ -186,7 +180,6 @@ Open `http://127.0.0.1:8000`, then verify:
 
 - the drawer contains Solvem Grocery with the yellow-and-charcoal icon;
 - selecting it shows the approved role, description, highlights, and stack;
-- the phone project preview uses the same icon;
 - existing app drawer items still use letter glyphs;
 - at a narrow viewport near 360px, the new item and detail card do not clip or overflow;
 - with JavaScript disabled, the fallback contains the Solvem content and icon.
