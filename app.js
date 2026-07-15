@@ -31,6 +31,14 @@ const APPS = [
     stack: ["Kotlin", "GitHub Packages", "Clean Architecture", "SQLite"],
     metrics: [["100K+", "Essentials 7th Ed downloads"], ["70%", "dev time saved per app"], ["13+", "apps shipped"]],
   },
+  {
+    id: "solvem", name: "Solvem Grocery", letter: "S", color: "#f5c400",
+    icon: "assets/solvem/icon.svg",
+    role: "Independent Product · Flutter & Supabase", store: null,
+    desc: "An end-to-end grocery operations platform connecting customer ordering, store administration, delivery workflows, and platform oversight through role-based realtime data.",
+    stack: ["Flutter", "Dart", "Supabase", "PostgreSQL", "Google Sign-In"],
+    metrics: [["4", "role-based experiences"], ["Realtime", "order operations"], ["COD", "settlement flow"]],
+  },
 ];
 
 const $ = (s) => document.querySelector(s);
@@ -69,10 +77,15 @@ openBtn.addEventListener("click", () => {
 });
 
 // ---- render app icons + detail ----
+function glyphHTML(app) {
+  if (!app.icon) return `<span class="glyph" style="background:${app.color}">${app.letter}</span>`;
+  return `<span class="glyph glyph-image"><img src="${app.icon}" alt="${app.name} app icon"></span>`;
+}
+
 function detailHTML(app) {
   return `
     <div class="detail-head">
-      <div class="glyph" style="background:${app.color}">${app.letter}</div>
+      ${glyphHTML(app)}
       <div><h3>${app.name}</h3><div class="detail-role">${app.role}</div></div>
     </div>
     <p>${app.desc}</p>
@@ -109,7 +122,7 @@ function showApp(app, scroll = false) {
 for (const app of APPS) {
   const btn = document.createElement("button");
   btn.className = "app-icon";
-  btn.innerHTML = `<span class="glyph" style="background:${app.color}">${app.letter}</span>${app.name}`;
+  btn.innerHTML = `${glyphHTML(app)}${app.name}`;
   btn.addEventListener("click", () => showApp(app, true));
   grid.appendChild(btn);
 }

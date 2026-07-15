@@ -271,6 +271,8 @@ body:not(.js) .reveal { opacity: 1; }
   display: grid; place-items: center;
   font-size: 22px; font-weight: 600; color: #0a1f14;
 }
+.glyph-image { overflow: hidden; border-radius: 14px !important; background: none !important; }
+.glyph-image img { width: 100%; height: 100%; display: block; object-fit: cover; }
 
 /* app detail panel */
 .app-detail {
