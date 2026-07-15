@@ -17,7 +17,8 @@
 - Highlights must communicate four role-based experiences, realtime order operations, and the COD-to-settlement workflow without unverified download, delivery-time, or transaction metrics.
 - Use the existing yellow-and-charcoal Solvem launcher artwork from `/Users/apple/AndroidStudioProjects/Grocery app /docs/stitch_grocery_app_ui_overhaul/premium_harvest/solvem_launcher_icon.svg` as a local asset under `assets/solvem/`.
 - Existing apps must retain their current letter glyphs without data changes.
-- The JavaScript detail view, app drawer, and no-JavaScript fallback must all use the same icon-rendering path.
+- The JavaScript detail view, app drawer, and generated project fallback must all use the same icon-rendering path.
+- All site and icon paths must remain relative so the static site works on GitHub Pages without a server-side runtime.
 - Do not add screenshots, a website CTA, a component abstraction, or a dependency.
 
 ---
@@ -146,7 +147,7 @@ Replace the drawer button assignment with:
   btn.innerHTML = `${glyphHTML(app)}${app.name}`;
 ```
 
-The existing no-JavaScript fallback already calls `detailHTML(a)`, so it receives the same icon behavior without another rendering path.
+The existing generated project fallback already calls `detailHTML(a)`, so it receives the same icon behavior without another rendering path.
 
 - [ ] **Step 6: Style image glyphs without changing letter glyphs**
 
@@ -182,7 +183,8 @@ Open `http://127.0.0.1:8000`, then verify:
 - selecting it shows the approved role, description, highlights, and stack;
 - existing app drawer items still use letter glyphs;
 - at a narrow viewport near 360px, the new item and detail card do not clip or overflow;
-- with JavaScript disabled, the fallback contains the Solvem content and icon.
+- the generated fallback contains the Solvem content and icon;
+- the site and icon load through relative paths in the local static-server check used to mirror GitHub Pages.
 
 Stop the local server after verification.
 

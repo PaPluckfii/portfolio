@@ -24,12 +24,13 @@ Add one object to the existing `APPS` array, one local icon asset, and the minim
 
 ## Behavior and Fallback
 
-The Solvem icon must have meaningful alternative text. If an app has no icon-image field, rendering must continue to use its existing letter and background color. The no-JavaScript project fallback must render the same Solvem content and icon.
+The Solvem icon must have meaningful alternative text. If an app has no icon-image field, rendering must continue to use its existing letter and background color. The JavaScript-generated project fallback must render the same Solvem content and icon for SEO and secondary presentation.
 
 ## Verification
 
 - Confirm Solvem appears in the app drawer and opens its matching detail card.
 - Confirm the icon renders in both locations without distortion.
 - Confirm every existing app still renders its letter glyph.
-- Confirm the no-JavaScript fallback includes Solvem.
+- Confirm the generated project fallback includes Solvem.
+- Confirm all site and icon paths remain relative so the static site works on GitHub Pages.
 - Check desktop and narrow-phone layouts for clipping or overflow.
