@@ -314,6 +314,8 @@ body:not(.js) .reveal { opacity: 1; }
 .collage-col { display: flex; flex-direction: column; gap: 12px; will-change: transform; }
 /* offset alternate columns so rows don't align even before drifting */
 .collage-col:nth-child(even) { padding-top: 40px; }
+.collage-shot { padding: 0; border: 0; border-radius: 18px; background: none; cursor: pointer; }
+.collage-shot:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .collage img {
   width: 100%; display: block;
   object-fit: cover; object-position: top;
@@ -327,9 +329,9 @@ body.js .collage img.in { opacity: 1; transform: none; }
   body.js .collage img { opacity: 1; transform: none; transition: none; }
 }
 /* cycle crop heights so uniform phone shots stagger like a masonry wall */
-.collage-col img:nth-child(3n) { aspect-ratio: 9 / 16; }
-.collage-col img:nth-child(3n + 1) { aspect-ratio: 925 / 2048; }
-.collage-col img:nth-child(3n + 2) { aspect-ratio: 9 / 17; }
+.collage-shot:nth-child(3n) img { aspect-ratio: 9 / 16; }
+.collage-shot:nth-child(3n + 1) img { aspect-ratio: 925 / 2048; }
+.collage-shot:nth-child(3n + 2) img { aspect-ratio: 9 / 17; }
 
 /* no-JS fallback grid (hidden by JS) */
 .fallback-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }

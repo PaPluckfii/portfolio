@@ -118,23 +118,41 @@ function detailHTML(app) {
 }
 
 const grid = $("#drawer-grid");
-const detail = $("#project-sheet-content");
+const sheetLayer = $("#project-sheet-layer");
+const sheet = $("#project-sheet");
+const sheetContent = $("#project-sheet-content");
+const sheetClose = $("#project-sheet-close");
+const sheetBackdrop = $("#project-sheet-backdrop");
+let sheetTrigger = null;
+let sheetCloseTimer = 0;
 
-function showApp(app, scroll = false) {
-  detail.hidden = false;
-  detail.innerHTML = detailHTML(app);
-  // restart launch animation
-  detail.style.animation = "none";
-  void detail.offsetWidth;
-  detail.style.animation = "";
-  if (scroll) document.getElementById("projects").scrollIntoView({ behavior: "smooth", block: "start" });
+function showApp(app, trigger) {
+  if (!app) return;
+  clearTimeout(sheetCloseTimer);
+  sheetTrigger = trigger ?? document.activeElement;
+  sheetContent.innerHTML = detailHTML(app);
+  sheet.setAttribute("aria-label", `${app.name} project details`);
+  sheetLayer.hidden = false;
+  requestAnimationFrame(() => sheetLayer.classList.add("open"));
+  sheetClose.focus();
+}
+
+function closeProjectSheet({ restoreFocus = true } = {}) {
+  if (sheetLayer.hidden) return;
+  sheetLayer.classList.remove("open");
+  sheet.classList.remove("dragging");
+  sheet.style.transform = "";
+  sheetCloseTimer = setTimeout(() => {
+    sheetLayer.hidden = true;
+    if (restoreFocus) sheetTrigger?.focus();
+  }, 300);
 }
 
 for (const app of APPS) {
   const btn = document.createElement("button");
   btn.className = "app-icon";
   btn.innerHTML = `${glyphHTML(app)}${app.name}`;
-  btn.addEventListener("click", () => showApp(app, true));
+  btn.addEventListener("click", () => showApp(app, btn));
   grid.appendChild(btn);
 }
 
@@ -142,9 +160,6 @@ for (const app of APPS) {
 $("#projects-fallback").innerHTML = APPS
   .map((a) => `<article class="app-detail project-detail">${detailHTML(a)}</article>`)
   .join("");
-
-// show first app by default so #projects isn't empty
-showApp(APPS[0]);
 
 // ---- collage: all screenshots, interleaved across apps so projects mix ----
 // 4 columns that drift at different speeds on scroll (Lummi-style)
@@ -155,7 +170,10 @@ showApp(APPS[0]);
   for (let i = 0; i < max; i++)
     for (const a of withShots)
       if (a.screenshots[i])
-        imgs.push(`<img src="assets/${a.id}/${a.screenshots[i]}" alt="${a.name} app screen" loading="lazy">`);
+        imgs.push(`
+  <button class="collage-shot" data-app-id="${a.id}" type="button" aria-label="Open ${a.name} project details">
+    <img src="assets/${a.id}/${a.screenshots[i]}" alt="${a.name} app screen" loading="lazy">
+  </button>`);
 
   const collage = $("#collage");
   const N = 4;
@@ -166,6 +184,12 @@ showApp(APPS[0]);
     return c;
   });
   imgs.forEach((html, i) => cols[i % N].insertAdjacentHTML("beforeend", html));
+
+  collage.addEventListener("click", (event) => {
+    const button = event.target.closest(".collage-shot");
+    if (!button) return;
+    showApp(APPS.find((app) => app.id === button.dataset.appId), button);
+  });
 
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
     // staggered fade-up as each image enters the viewport
@@ -202,6 +226,37 @@ showApp(APPS[0]);
   }
 }
 
+sheetClose.addEventListener("click", closeProjectSheet);
+sheetBackdrop.addEventListener("click", closeProjectSheet);
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !sheetLayer.hidden) closeProjectSheet();
+});
+
+let dragStartY = 0;
+let dragDistance = 0;
+sheet.addEventListener("pointerdown", (event) => {
+  if (!event.isPrimary || sheetContent.scrollTop > 0) return;
+  dragStartY = event.clientY;
+  dragDistance = 0;
+  sheet.setPointerCapture(event.pointerId);
+});
+sheet.addEventListener("pointermove", (event) => {
+  if (!sheet.hasPointerCapture(event.pointerId)) return;
+  dragDistance = Math.max(0, event.clientY - dragStartY);
+  if (!dragDistance) return;
+  sheet.classList.add("dragging");
+  sheet.style.transform = `translateY(${dragDistance}px)`;
+});
+sheet.addEventListener("pointerup", (event) => {
+  if (!sheet.hasPointerCapture(event.pointerId)) return;
+  sheet.releasePointerCapture(event.pointerId);
+  if (dragDistance > 72) closeProjectSheet();
+  else {
+    sheet.classList.remove("dragging");
+    sheet.style.transform = "";
+  }
+});
+
 // ---- scroll reveal (stagger siblings) ----
 const io = new IntersectionObserver((entries) => {
   for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
@@ -216,6 +271,7 @@ const SCREEN_FOR = { top: "home", projects: "projects", skills: "skills", experi
 
 function setScreen(name) {
   const projectsOpen = name === "projects";
+  if (!projectsOpen) closeProjectSheet({ restoreFocus: false });
   if (!projectsOpen) {
     document.querySelectorAll(".pscreen").forEach((s) =>
       s.classList.toggle("active", s.dataset.screen === name));

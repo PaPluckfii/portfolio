@@ -32,3 +32,21 @@ test("sheet stays inside the phone and supports scroll and reduced motion", () =
   assert.match(css, /\.project-sheet-content\s*\{[^}]*overflow-y:\s*auto;/s);
   assert.match(css, /@media \(prefers-reduced-motion:\s*reduce\)[\s\S]*\.project-sheet/);
 });
+
+test("drawer icons and screenshots route project identity to the same sheet", () => {
+  assert.match(appJs, /btn\.addEventListener\("click", \(\) => showApp\(app, btn\)\)/);
+  assert.match(appJs, /class="collage-shot" data-app-id="\$\{a\.id\}"/);
+  assert.match(appJs, /collage\.addEventListener\("click", \(event\) =>/);
+  assert.match(appJs, /showApp\(APPS\.find\(\(app\) => app\.id === button\.dataset\.appId\), button\)/);
+  assert.match(appJs, /sheetContent\.innerHTML = detailHTML\(app\)/);
+});
+
+test("one close function owns every dismissal path and focus restoration", () => {
+  assert.match(appJs, /function closeProjectSheet\(\{ restoreFocus = true \} = \{\}\)/);
+  assert.match(appJs, /sheetClose\.addEventListener\("click", closeProjectSheet\)/);
+  assert.match(appJs, /sheetBackdrop\.addEventListener\("click", closeProjectSheet\)/);
+  assert.match(appJs, /event\.key === "Escape".*closeProjectSheet\(\)/s);
+  assert.match(appJs, /dragDistance > 72.*closeProjectSheet\(\)/s);
+  assert.match(appJs, /sheetTrigger\?\.focus\(\)/);
+  assert.match(appJs, /setTimeout\(\(\) => \{\s*sheetLayer\.hidden = true;\s*if \(restoreFocus\) sheetTrigger\?\.focus\(\);\s*\}, 300\)/s);
+});
