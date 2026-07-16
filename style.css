@@ -105,28 +105,11 @@ body:not(.js) .reveal { opacity: 1; }
 .skill-group:hover, .notif:hover { transform: translateY(-6px) rotate(-1deg) scale(1.02); box-shadow: 0 16px 32px #0008; }
 .app-detail:hover { transform: translateY(-4px); box-shadow: 0 16px 32px #0008; }
 
-/* rotating glow border on active app card: --ga is a registered custom
-   property so animating it rotates the conic-gradient; the double mask with
-   mask-composite: exclude cuts a 1px ring so only the edge shows */
-@property --ga { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
-#app-detail { position: relative; }
-#app-detail::before {
-  content: ""; position: absolute; inset: 0; border-radius: var(--r-lg); padding: 1px;
-  background: conic-gradient(from var(--ga), var(--accent), transparent 25%, transparent 75%, var(--accent));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor; mask-composite: exclude;
-  animation: glowspin 3s linear infinite;
-  pointer-events: none;
-}
-@keyframes glowspin { to { --ga: 360deg; } }
-
 @media (prefers-reduced-motion: reduce) {
   .reveal, .reveal.in { opacity: 1; transform: none; animation: none; }
   html { scroll-behavior: auto; }
   .skill-group, .notif, .app-detail, .contact-links a { transition: none; }
   .skill-group:hover, .notif:hover, .app-detail:hover, .contact-links a:hover { transform: none; box-shadow: none; }
-  #app-detail::before { animation: none; }
   .pscreen { transition: none; }
 }
 /* ---- phone ---- */
@@ -281,17 +264,51 @@ body:not(.js) .reveal { opacity: 1; }
   transform-origin: top center; animation: launch .35s cubic-bezier(.2, .9, .3, 1.05);
 }
 @keyframes launch { from { opacity: 0; transform: scale(.85) translateY(16px); } }
-.app-detail .detail-head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-.app-detail .glyph {
+.project-detail .detail-head { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+.project-detail .glyph {
   width: 56px; height: 56px; border-radius: 28px; flex-shrink: 0;
   display: grid; place-items: center; font-size: 24px; font-weight: 600; color: #0a1f14;
 }
-.app-detail h3 { font-size: 24px; }
-.app-detail .detail-role { color: var(--accent); font-size: 14px; }
-.app-detail p { color: var(--muted); margin-bottom: 16px; }
-.app-detail .metrics { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
-.app-detail .metric b { display: block; font-size: 22px; color: var(--text); }
-.app-detail .metric span { font-size: 13px; color: var(--muted); }
+.project-detail h3 { font-size: 24px; }
+.project-detail .detail-role { color: var(--accent); font-size: 14px; }
+.project-detail p { color: var(--muted); margin-bottom: 16px; }
+.project-detail .metrics { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 16px; }
+.project-detail .metric b { display: block; font-size: 22px; color: var(--text); }
+.project-detail .metric span { font-size: 13px; color: var(--muted); }
+
+.project-sheet-layer {
+  position: absolute; inset: 0; z-index: 5; display: grid; align-items: end;
+  border-radius: 32px; overflow: hidden;
+}
+.project-sheet-layer[hidden] { display: none; }
+.project-sheet-backdrop {
+  position: absolute; inset: 0; border: 0; background: #0008; opacity: 0;
+  transition: opacity .3s ease;
+}
+.project-sheet {
+  position: relative; z-index: 1; max-height: 82%; display: flex; flex-direction: column;
+  background: #202020; border-radius: 24px 24px 0 0;
+  transform: translateY(100%); transition: transform .3s cubic-bezier(.2, .9, .3, 1);
+  box-shadow: 0 -16px 36px #0008;
+}
+.project-sheet-layer.open .project-sheet { transform: translateY(0); }
+.project-sheet-layer.open .project-sheet-backdrop { opacity: 1; }
+.project-sheet.dragging { transition: none; }
+.project-sheet-handle { width: 36px; height: 4px; margin: 8px auto 0; border-radius: 4px; background: #fff5; }
+.project-sheet-close {
+  position: absolute; top: 10px; right: 12px; z-index: 1; width: 28px; height: 28px;
+  border: 0; border-radius: 50%; background: #ffffff14; color: #fff; font-size: 20px; cursor: pointer;
+}
+.project-sheet-content { overflow-y: auto; overscroll-behavior: contain; padding: 24px 20px 22px; }
+.project-sheet-content .detail-head { padding-right: 28px; }
+.project-sheet-content .glyph { width: 44px; height: 44px; }
+.project-sheet-content h3 { font-size: 20px; }
+.project-sheet-content p { font-size: 12px; line-height: 1.5; }
+.project-sheet-content .metrics { gap: 12px; }
+.project-sheet-content .metric b { font-size: 16px; }
+.project-sheet-content .metric span { font-size: 10px; }
+.project-sheet-content .chips { gap: 6px; }
+.project-sheet-content .chips span { padding: 5px 8px; font-size: 9px; }
 /* collage: 4 masonry columns of all app screenshots, drifting on scroll */
 .collage { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 32px; }
 .collage-col { display: flex; flex-direction: column; gap: 12px; will-change: transform; }
@@ -321,6 +338,7 @@ body.js .fallback-grid { display: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .drawer { transition: none; }
+  .project-sheet, .project-sheet-backdrop { transition: none; }
   .drawer-hint { animation: none; }
   .app-detail { animation: none; }
   .drawer-chevron { animation: none; }

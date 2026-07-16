@@ -140,7 +140,7 @@ for (const app of APPS) {
 
 // no-JS fallback also useful for SEO: render all details statically
 $("#projects-fallback").innerHTML = APPS
-  .map((a) => `<article class="app-detail">${detailHTML(a)}</article>`)
+  .map((a) => `<article class="app-detail project-detail">${detailHTML(a)}</article>`)
   .join("");
 
 // show first app by default so #projects isn't empty

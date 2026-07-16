@@ -38,7 +38,6 @@
   <section class="section" id="projects">
     <h2 class="reveal">Apps</h2>
     <p class="section-sub reveal">Tap an icon in the drawer — or browse below.</p>
-    <div class="app-detail" id="app-detail" hidden></div>
     <div id="projects-fallback" class="fallback-grid"></div>
     <div class="collage reveal" id="collage" aria-label="App screenshots"></div>
   </section>
@@ -180,6 +179,14 @@
           <div class="drawer-search">Search apps…</div>
           <p class="drawer-hint" id="project-hint" role="status" hidden>Tap an app to explore a project</p>
           <div class="drawer-grid" id="drawer-grid"></div>
+        </div>
+        <div class="project-sheet-layer" id="project-sheet-layer" hidden>
+          <button class="project-sheet-backdrop" id="project-sheet-backdrop" type="button" aria-label="Close project details"></button>
+          <section class="project-sheet" id="project-sheet" role="dialog" aria-modal="true" aria-label="Project details">
+            <div class="project-sheet-handle" aria-hidden="true"></div>
+            <button class="project-sheet-close" id="project-sheet-close" type="button" aria-label="Close project details">×</button>
+            <div id="project-sheet-content" class="project-sheet-content project-detail"></div>
+          </section>
         </div>
       </div>
     </div>
