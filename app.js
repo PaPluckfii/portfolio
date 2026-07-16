@@ -229,6 +229,10 @@ $("#projects-fallback").innerHTML = APPS
       for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); imgIO.unobserve(e.target); }
     }, { rootMargin: "0px 0px 30% 0px", threshold: 0 });
     collage.querySelectorAll("img").forEach((img, i) => {
+      // deterministic pseudo-random scatter: stable across loads
+      img.style.setProperty("--sx", `${(Math.sin(i * 91) * 42).toFixed(1)}%`);
+      img.style.setProperty("--sy", `${(Math.cos(i * 53) * 60 - 20).toFixed(1)}%`);
+      img.style.setProperty("--sr", `${(Math.sin(i * 37) * 24).toFixed(1)}deg`);
       img.style.transitionDelay = `${(i % N) * 60}ms`;
       imgIO.observe(img);
     });
@@ -237,18 +241,25 @@ $("#projects-fallback").innerHTML = APPS
     const speeds = [-90, 60, -50, 80]; // max px drift per column, alternating direction
     const cur = [0, 0, 0, 0];
     let raf = 0;
+    let lastY = scrollY;
+    let vel = 0;
     const step = () => {
+      vel += (scrollY - lastY - vel) * 0.12; // smoothed scroll velocity, px/frame
+      lastY = scrollY;
+      const skew = Math.max(-6, Math.min(6, vel * 0.06));
       const r = collage.getBoundingClientRect();
       // 0 when collage enters viewport bottom, 1 when it leaves the top
       const p = Math.min(1, Math.max(0, (innerHeight - r.top) / (innerHeight + r.height)));
-      let settled = true;
+      let settled = Math.abs(vel) < 0.05;
       cols.forEach((c, i) => {
         const target = (p - 0.5) * 2 * speeds[i];
         cur[i] += (target - cur[i]) * 0.07;
         if (Math.abs(target - cur[i]) > 0.1) settled = false;
-        c.style.transform = `translateY(${cur[i]}px)`;
+        c.style.transform = `translateY(${cur[i]}px) skewY(${skew}deg)`;
       });
       raf = settled ? 0 : requestAnimationFrame(step);
+      // rest upright once the loop stops
+      if (!raf) cols.forEach((c, i) => { c.style.transform = `translateY(${cur[i]}px) skewY(0deg)`; });
     };
     const wake = () => { if (!raf) raf = requestAnimationFrame(step); };
     addEventListener("scroll", wake, { passive: true });
