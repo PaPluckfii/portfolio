@@ -23,6 +23,17 @@ test("scatter offsets are set per image, deterministically from index", () => {
   assert.doesNotMatch(collage, /Math\.random/);
 });
 
+test("reveal triggers on the untransformed slot, only when actually visible", () => {
+  const collage = appJs.slice(appJs.indexOf("---- collage"));
+  // observe the stable parent button: the img's own scatter transform shifts
+  // its bounding box and would corrupt the trigger point
+  assert.match(collage, /querySelectorAll\("\.collage-shot"\)/);
+  assert.match(collage, /imgIO\.observe\(shot\)/);
+  // no pre-trigger margin: the entrance must be seen, not pre-completed off-screen
+  assert.doesNotMatch(collage, /rootMargin: "0px 0px 30% 0px"/);
+  assert.match(collage, /threshold: 0\.15/);
+});
+
 test("column drift transform includes velocity-driven skewY clamped to ±6deg", () => {
   const collage = appJs.slice(appJs.indexOf("---- collage"));
   assert.match(collage, /skewY\(/);

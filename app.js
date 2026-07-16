@@ -222,19 +222,22 @@ $("#projects-fallback").innerHTML = APPS
   });
 
   if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    // staggered fade-up as each image enters the viewport
-    // rootMargin pre-triggers the reveal before the image scrolls in,
-    // so the fade is already underway when it becomes visible
+    // staggered scatter->sort as each image enters the viewport.
+    // Observe the untransformed .collage-shot button, not the img: the img's
+    // scatter transform displaces its bounding box, which would shift the
+    // trigger point by the scatter offset itself. And no pre-trigger
+    // rootMargin: the entrance must start in view, not finish off-screen.
     const imgIO = new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) { e.target.classList.add("in"); imgIO.unobserve(e.target); }
-    }, { rootMargin: "0px 0px 30% 0px", threshold: 0 });
-    collage.querySelectorAll("img").forEach((img, i) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.querySelector("img").classList.add("in"); imgIO.unobserve(e.target); }
+    }, { threshold: 0.15 });
+    collage.querySelectorAll(".collage-shot").forEach((shot, i) => {
+      const img = shot.querySelector("img");
       // deterministic pseudo-random scatter: stable across loads
       img.style.setProperty("--sx", `${(Math.sin(i * 91) * 42).toFixed(1)}%`);
       img.style.setProperty("--sy", `${(Math.cos(i * 53) * 60 - 20).toFixed(1)}%`);
       img.style.setProperty("--sr", `${(Math.sin(i * 37) * 24).toFixed(1)}deg`);
       img.style.transitionDelay = `${(i % N) * 60}ms`;
-      imgIO.observe(img);
+      imgIO.observe(shot);
     });
 
     // drifting columns with inertia: lerp toward scroll-derived target
