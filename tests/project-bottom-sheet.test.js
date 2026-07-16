@@ -48,7 +48,7 @@ test("one close function owns every dismissal path and focus restoration", () =>
   assert.match(appJs, /event\.key === "Escape".*closeProjectSheet\(\)/s);
   assert.match(appJs, /dragDistance > 72.*closeProjectSheet\(\)/s);
   assert.match(appJs, /sheetTrigger\?\.focus\(\)/);
-  assert.match(appJs, /setTimeout\(\(\) => \{\s*sheetLayer\.hidden = true;\s*if \(restoreFocus\) sheetTrigger\?\.focus\(\);\s*\}, closeDelay\)/s);
+  assert.match(appJs, /setTimeout\(\(\) => \{\s*sheetLayer\.hidden = true;[\s\S]*?if \(restoreFocus\) sheetTrigger\?\.focus\(\);\s*\}, closeDelay\)/s);
 });
 
 test("repeated dismissal cancels the previous close completion", () => {
@@ -67,4 +67,11 @@ test("pointer interruption paths share drag cleanup without dismissing", () => {
 test("reduced motion skips the closing delay", () => {
   assert.match(appJs, /const closeDelay = matchMedia\("\(prefers-reduced-motion: reduce\)"\)\.matches \? 0 : 300;/);
   assert.match(appJs, /\}, closeDelay\);/);
+});
+
+test("pending open frames are cancelled and cannot leave stale open state", () => {
+  assert.match(appJs, /let sheetOpenFrame = 0;/);
+  assert.match(appJs, /function showApp[\s\S]*?cancelAnimationFrame\(sheetOpenFrame\);[\s\S]*?sheetOpenFrame = requestAnimationFrame\(\(\) => \{\s*sheetOpenFrame = 0;\s*sheetLayer\.classList\.add\("open"\);\s*\}\)/);
+  assert.match(appJs, /function closeProjectSheet[\s\S]*?cancelAnimationFrame\(sheetOpenFrame\);\s*sheetOpenFrame = 0;[\s\S]*?clearTimeout\(sheetCloseTimer\);/);
+  assert.match(appJs, /sheetLayer\.hidden = true;\s*sheetLayer\.classList\.remove\("open"\);/);
 });

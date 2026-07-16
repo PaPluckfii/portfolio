@@ -125,19 +125,27 @@ const sheetClose = $("#project-sheet-close");
 const sheetBackdrop = $("#project-sheet-backdrop");
 let sheetTrigger = null;
 let sheetCloseTimer = 0;
+let sheetOpenFrame = 0;
 
 function showApp(app, trigger) {
   if (!app) return;
+  cancelAnimationFrame(sheetOpenFrame);
+  sheetOpenFrame = 0;
   clearTimeout(sheetCloseTimer);
   sheetTrigger = trigger ?? document.activeElement;
   sheetContent.innerHTML = detailHTML(app);
   sheet.setAttribute("aria-label", `${app.name} project details`);
   sheetLayer.hidden = false;
-  requestAnimationFrame(() => sheetLayer.classList.add("open"));
+  sheetOpenFrame = requestAnimationFrame(() => {
+    sheetOpenFrame = 0;
+    sheetLayer.classList.add("open");
+  });
   sheetClose.focus();
 }
 
 function closeProjectSheet({ restoreFocus = true } = {}) {
+  cancelAnimationFrame(sheetOpenFrame);
+  sheetOpenFrame = 0;
   clearTimeout(sheetCloseTimer);
   if (sheetLayer.hidden) return;
   sheetLayer.classList.remove("open");
@@ -145,6 +153,7 @@ function closeProjectSheet({ restoreFocus = true } = {}) {
   const closeDelay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 300;
   sheetCloseTimer = setTimeout(() => {
     sheetLayer.hidden = true;
+    sheetLayer.classList.remove("open");
     if (restoreFocus) sheetTrigger?.focus();
   }, closeDelay);
 }
