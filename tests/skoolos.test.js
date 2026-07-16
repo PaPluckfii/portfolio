@@ -23,11 +23,17 @@ test("stores the official SkoolOS icon locally", () => {
   assert.doesNotMatch(icon, /^https?:\/\//);
 });
 
-test("uses three or four local SkoolOS wireframe screenshots", () => {
+test("uses the five local SkoolOS product screenshots", () => {
   const configured = skoolos.match(/screenshots: \[([^\]]+)\]/)?.[1] ?? "";
   const screenshots = [...configured.matchAll(/"([^"]+)"/g)].map((match) => match[1]);
 
-  assert.ok(screenshots.length >= 3 && screenshots.length <= 4, `expected 3–4 screenshots, found ${screenshots.length}`);
+  assert.deepEqual(screenshots, [
+    "teacher-capture-recording.png",
+    "teacher-analytics.png",
+    "teacher-lectures.png",
+    "teacher-assistant.png",
+    "teacher-lecture-notes.png",
+  ]);
 
   for (const screenshot of screenshots) {
     assert.doesNotMatch(screenshot, /^https?:\/\//, `${screenshot} must be local`);

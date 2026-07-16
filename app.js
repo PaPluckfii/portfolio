@@ -53,7 +53,7 @@ const APPS = [
     desc: "A teacher-focused education platform for grouped classes and subjects, review-first lecture recording, processing tracking, local transcription, and structured notes.",
     stack: ["Kotlin", "Compose Multiplatform", "Ktor", "PostgreSQL", "whisper.cpp"],
     metrics: [["KMP", "shared app foundation"], ["Local AI", "lecture transcription"], ["Review-first", "recording workflow"]],
-    screenshots: ["ready-to-record.png", "recording-live-transcript.png", "review-transcript-upload.png"],
+    screenshots: ["teacher-capture-recording.png", "teacher-analytics.png", "teacher-lectures.png", "teacher-assistant.png", "teacher-lecture-notes.png"],
   },
   {
     id: "mandir-yatra", name: "Mandir Yaatra", letter: "M", color: "#ff5722",
