@@ -14,6 +14,8 @@ test("Apps starts with screenshots instead of a live page detail card", () => {
   const projects = html.match(/<section class="section" id="projects">([\s\S]*?)<section class="section" id="skills">/)?.[1] ?? "";
   assert.doesNotMatch(projects, /id="app-detail"/);
   assert.match(projects, /id="projects-fallback"[\s\S]*id="collage"/);
+  assert.doesNotMatch(appJs, /#app-detail/);
+  assert.match(appJs, /<article class="app-detail project-detail">/);
 });
 
 test("phone contains one accessible project bottom sheet", () => {

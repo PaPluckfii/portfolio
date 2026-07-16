@@ -118,7 +118,7 @@ function detailHTML(app) {
 }
 
 const grid = $("#drawer-grid");
-const detail = $("#app-detail");
+const detail = $("#project-sheet-content");
 
 function showApp(app, scroll = false) {
   detail.hidden = false;
