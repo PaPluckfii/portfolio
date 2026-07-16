@@ -123,9 +123,24 @@ const sheet = $("#project-sheet");
 const sheetContent = $("#project-sheet-content");
 const sheetClose = $("#project-sheet-close");
 const sheetBackdrop = $("#project-sheet-backdrop");
+const sheetHandle = $("#project-sheet-handle");
+const sheetInertStates = new Map();
 let sheetTrigger = null;
 let sheetCloseTimer = 0;
 let sheetOpenFrame = 0;
+
+function setPhoneLayersInert(inert) {
+  for (const layer of sheetLayer.parentElement.children) {
+    if (layer === sheetLayer) continue;
+    if (inert) {
+      if (!sheetInertStates.has(layer)) sheetInertStates.set(layer, layer.inert);
+      layer.inert = true;
+    } else if (sheetInertStates.has(layer)) {
+      layer.inert = sheetInertStates.get(layer);
+    }
+  }
+  if (!inert) sheetInertStates.clear();
+}
 
 function showApp(app, trigger) {
   if (!app) return;
@@ -135,6 +150,7 @@ function showApp(app, trigger) {
   sheetTrigger = trigger ?? document.activeElement;
   sheetContent.innerHTML = detailHTML(app);
   sheet.setAttribute("aria-label", `${app.name} project details`);
+  setPhoneLayersInert(true);
   sheetLayer.hidden = false;
   sheetOpenFrame = requestAnimationFrame(() => {
     sheetOpenFrame = 0;
@@ -147,13 +163,17 @@ function closeProjectSheet({ restoreFocus = true } = {}) {
   cancelAnimationFrame(sheetOpenFrame);
   sheetOpenFrame = 0;
   clearTimeout(sheetCloseTimer);
-  if (sheetLayer.hidden) return;
+  if (sheetLayer.hidden) {
+    setPhoneLayersInert(false);
+    return;
+  }
   sheetLayer.classList.remove("open");
   resetSheetDrag();
   const closeDelay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 300;
   sheetCloseTimer = setTimeout(() => {
     sheetLayer.hidden = true;
     sheetLayer.classList.remove("open");
+    setPhoneLayersInert(false);
     if (restoreFocus) sheetTrigger?.focus();
   }, closeDelay);
 }
@@ -181,8 +201,8 @@ $("#projects-fallback").innerHTML = APPS
     for (const a of withShots)
       if (a.screenshots[i])
         imgs.push(`
-  <button class="collage-shot" data-app-id="${a.id}" type="button" aria-label="Open ${a.name} project details">
-    <img src="assets/${a.id}/${a.screenshots[i]}" alt="${a.name} app screen" loading="lazy">
+  <button class="collage-shot" data-app-id="${a.id}" type="button" aria-label="Open ${a.name} project details, screenshot ${i + 1} of ${a.screenshots.length}">
+    <img src="assets/${a.id}/${a.screenshots[i]}" alt="${a.name} screenshot ${i + 1} of ${a.screenshots.length}" loading="lazy">
   </button>`);
 
   const collage = $("#collage");
@@ -239,7 +259,24 @@ $("#projects-fallback").innerHTML = APPS
 sheetClose.addEventListener("click", closeProjectSheet);
 sheetBackdrop.addEventListener("click", closeProjectSheet);
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !sheetLayer.hidden) closeProjectSheet();
+  if (sheetLayer.hidden) return;
+  if (event.key === "Escape") {
+    closeProjectSheet();
+    return;
+  }
+  if (event.key !== "Tab") return;
+  const sheetFocusable = [...sheet.querySelectorAll("button:not([disabled]), a[href], [tabindex]:not([tabindex='-1'])")]
+    .filter((element) => !element.hidden);
+  const first = sheetFocusable[0];
+  const last = sheetFocusable.at(-1);
+  if (!first) return;
+  if (event.shiftKey && (document.activeElement === first || !sheet.contains(document.activeElement))) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && (document.activeElement === last || !sheet.contains(document.activeElement))) {
+    event.preventDefault();
+    first.focus();
+  }
 });
 
 let dragStartY = 0;
@@ -257,30 +294,30 @@ function resetSheetDrag() {
 function finishSheetDrag(event, { allowDismiss = false } = {}) {
   if (event.pointerId !== dragPointerId) return;
   const shouldDismiss = allowDismiss && dragDistance > 72;
-  if (sheet.hasPointerCapture(event.pointerId)) sheet.releasePointerCapture(event.pointerId);
+  if (sheetHandle.hasPointerCapture(event.pointerId)) sheetHandle.releasePointerCapture(event.pointerId);
   resetSheetDrag();
   if (shouldDismiss) closeProjectSheet();
 }
 
-sheet.addEventListener("pointerdown", (event) => {
-  if (!event.isPrimary || sheetContent.scrollTop > 0) return;
+sheetHandle.addEventListener("pointerdown", (event) => {
+  if (!event.isPrimary) return;
   dragPointerId = event.pointerId;
   dragStartY = event.clientY;
   dragDistance = 0;
-  sheet.setPointerCapture(event.pointerId);
+  sheetHandle.setPointerCapture(event.pointerId);
 });
-sheet.addEventListener("pointermove", (event) => {
-  if (event.pointerId !== dragPointerId || !sheet.hasPointerCapture(event.pointerId)) return;
+sheetHandle.addEventListener("pointermove", (event) => {
+  if (event.pointerId !== dragPointerId || !sheetHandle.hasPointerCapture(event.pointerId)) return;
   dragDistance = Math.max(0, event.clientY - dragStartY);
   if (!dragDistance) return;
   sheet.classList.add("dragging");
   sheet.style.transform = `translateY(${dragDistance}px)`;
 });
-sheet.addEventListener("pointerup", (event) => {
+sheetHandle.addEventListener("pointerup", (event) => {
   finishSheetDrag(event, { allowDismiss: true });
 });
-sheet.addEventListener("pointercancel", (event) => finishSheetDrag(event));
-sheet.addEventListener("lostpointercapture", (event) => finishSheetDrag(event));
+sheetHandle.addEventListener("pointercancel", (event) => finishSheetDrag(event));
+sheetHandle.addEventListener("lostpointercapture", (event) => finishSheetDrag(event));
 
 // ---- scroll reveal (stagger siblings) ----
 const io = new IntersectionObserver((entries) => {
