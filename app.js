@@ -138,14 +138,15 @@ function showApp(app, trigger) {
 }
 
 function closeProjectSheet({ restoreFocus = true } = {}) {
+  clearTimeout(sheetCloseTimer);
   if (sheetLayer.hidden) return;
   sheetLayer.classList.remove("open");
-  sheet.classList.remove("dragging");
-  sheet.style.transform = "";
+  resetSheetDrag();
+  const closeDelay = matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 300;
   sheetCloseTimer = setTimeout(() => {
     sheetLayer.hidden = true;
     if (restoreFocus) sheetTrigger?.focus();
-  }, 300);
+  }, closeDelay);
 }
 
 for (const app of APPS) {
@@ -234,28 +235,43 @@ document.addEventListener("keydown", (event) => {
 
 let dragStartY = 0;
 let dragDistance = 0;
+let dragPointerId = null;
+
+function resetSheetDrag() {
+  sheet.classList.remove("dragging");
+  sheet.style.transform = "";
+  dragStartY = 0;
+  dragDistance = 0;
+  dragPointerId = null;
+}
+
+function finishSheetDrag(event, { allowDismiss = false } = {}) {
+  if (event.pointerId !== dragPointerId) return;
+  const shouldDismiss = allowDismiss && dragDistance > 72;
+  if (sheet.hasPointerCapture(event.pointerId)) sheet.releasePointerCapture(event.pointerId);
+  resetSheetDrag();
+  if (shouldDismiss) closeProjectSheet();
+}
+
 sheet.addEventListener("pointerdown", (event) => {
   if (!event.isPrimary || sheetContent.scrollTop > 0) return;
+  dragPointerId = event.pointerId;
   dragStartY = event.clientY;
   dragDistance = 0;
   sheet.setPointerCapture(event.pointerId);
 });
 sheet.addEventListener("pointermove", (event) => {
-  if (!sheet.hasPointerCapture(event.pointerId)) return;
+  if (event.pointerId !== dragPointerId || !sheet.hasPointerCapture(event.pointerId)) return;
   dragDistance = Math.max(0, event.clientY - dragStartY);
   if (!dragDistance) return;
   sheet.classList.add("dragging");
   sheet.style.transform = `translateY(${dragDistance}px)`;
 });
 sheet.addEventListener("pointerup", (event) => {
-  if (!sheet.hasPointerCapture(event.pointerId)) return;
-  sheet.releasePointerCapture(event.pointerId);
-  if (dragDistance > 72) closeProjectSheet();
-  else {
-    sheet.classList.remove("dragging");
-    sheet.style.transform = "";
-  }
+  finishSheetDrag(event, { allowDismiss: true });
 });
+sheet.addEventListener("pointercancel", (event) => finishSheetDrag(event));
+sheet.addEventListener("lostpointercapture", (event) => finishSheetDrag(event));
 
 // ---- scroll reveal (stagger siblings) ----
 const io = new IntersectionObserver((entries) => {

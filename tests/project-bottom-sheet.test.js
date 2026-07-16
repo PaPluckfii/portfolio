@@ -48,5 +48,23 @@ test("one close function owns every dismissal path and focus restoration", () =>
   assert.match(appJs, /event\.key === "Escape".*closeProjectSheet\(\)/s);
   assert.match(appJs, /dragDistance > 72.*closeProjectSheet\(\)/s);
   assert.match(appJs, /sheetTrigger\?\.focus\(\)/);
-  assert.match(appJs, /setTimeout\(\(\) => \{\s*sheetLayer\.hidden = true;\s*if \(restoreFocus\) sheetTrigger\?\.focus\(\);\s*\}, 300\)/s);
+  assert.match(appJs, /setTimeout\(\(\) => \{\s*sheetLayer\.hidden = true;\s*if \(restoreFocus\) sheetTrigger\?\.focus\(\);\s*\}, closeDelay\)/s);
+});
+
+test("repeated dismissal cancels the previous close completion", () => {
+  assert.match(appJs, /function closeProjectSheet[\s\S]*?clearTimeout\(sheetCloseTimer\);[\s\S]*?sheetCloseTimer = setTimeout/);
+});
+
+test("pointer interruption paths share drag cleanup without dismissing", () => {
+  assert.match(appJs, /function resetSheetDrag\(\)[\s\S]*?dragStartY = 0;[\s\S]*?dragDistance = 0;/);
+  assert.match(appJs, /function finishSheetDrag\(event, \{ allowDismiss = false \} = \{\}\)/);
+  assert.match(appJs, /pointerup[\s\S]*?finishSheetDrag\(event, \{ allowDismiss: true \}\)/);
+  assert.match(appJs, /pointercancel[\s\S]*?finishSheetDrag\(event\)/);
+  assert.match(appJs, /lostpointercapture[\s\S]*?finishSheetDrag\(event\)/);
+  assert.match(appJs, /const shouldDismiss = allowDismiss && dragDistance > 72;/);
+});
+
+test("reduced motion skips the closing delay", () => {
+  assert.match(appJs, /const closeDelay = matchMedia\("\(prefers-reduced-motion: reduce\)"\)\.matches \? 0 : 300;/);
+  assert.match(appJs, /\}, closeDelay\);/);
 });
