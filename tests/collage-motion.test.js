@@ -9,6 +9,13 @@ const root = path.resolve(__dirname, "..");
 const css = fs.readFileSync(path.join(root, "style.css"), "utf8");
 const appJs = fs.readFileSync(path.join(root, "app.js"), "utf8");
 
+test("collage screenshots use a stable seeded shuffle", () => {
+  const collage = appJs.slice(appJs.indexOf("---- collage"));
+  assert.match(collage, /let shuffleSeed = 0x3ddc84/);
+  assert.match(collage, /\[imgs\[i\], imgs\[j\]\] = \[imgs\[j\], imgs\[i\]\]/);
+  assert.doesNotMatch(collage, /Math\.random/);
+});
+
 test("collage images enter scattered (translate + rotate vars), not fade-up", () => {
   assert.match(css, /body\.js \.collage img \{[^}]*translate\(var\(--sx\), var\(--sy\)\) rotate\(var\(--sr\)\) scale\(1\.05\)/);
   assert.doesNotMatch(css, /body\.js \.collage img \{[^}]*translateY\(28px\) scale\(\.96\)/);

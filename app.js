@@ -191,7 +191,7 @@ $("#projects-fallback").innerHTML = APPS
   .map((a) => `<article class="app-detail project-detail">${detailHTML(a)}</article>`)
   .join("");
 
-// ---- collage: all screenshots, interleaved across apps so projects mix ----
+// ---- collage: all screenshots, deterministically shuffled across apps ----
 // 4 columns that drift at different speeds on scroll (Lummi-style)
 {
   const withShots = APPS.filter((a) => a.screenshots?.length);
@@ -204,6 +204,14 @@ $("#projects-fallback").innerHTML = APPS
   <button class="collage-shot" data-app-id="${a.id}" type="button" aria-label="Open ${a.name} project details, screenshot ${i + 1} of ${a.screenshots.length}">
     <img src="assets/${a.id}/${a.screenshots[i]}" alt="${a.name} screenshot ${i + 1} of ${a.screenshots.length}" loading="lazy">
   </button>`);
+
+  // Seeded Fisher-Yates keeps the mixed layout stable across reloads.
+  let shuffleSeed = 0x3ddc84;
+  for (let i = imgs.length - 1; i > 0; i--) {
+    shuffleSeed = (shuffleSeed * 1664525 + 1013904223) >>> 0;
+    const j = shuffleSeed % (i + 1);
+    [imgs[i], imgs[j]] = [imgs[j], imgs[i]];
+  }
 
   const collage = $("#collage");
   const N = 4;
