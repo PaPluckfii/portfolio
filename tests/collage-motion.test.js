@@ -34,6 +34,14 @@ test("reveal triggers on the untransformed slot, only when actually visible", ()
   assert.match(collage, /threshold: 0\.15/);
 });
 
+test("reveal waits for lazy image pixels and paints the scatter state first", () => {
+  const collage = appJs.slice(appJs.indexOf("---- collage"));
+  const decode = collage.indexOf("await img.decode()");
+  const reveal = collage.indexOf('img.classList.add("in")');
+  assert.ok(decode !== -1 && decode < reveal);
+  assert.match(collage, /requestAnimationFrame\(\(\) => requestAnimationFrame\(\(\) => img\.classList\.add\("in"\)\)\)/);
+});
+
 test("column drift transform includes velocity-driven skewY clamped to ±6deg", () => {
   const collage = appJs.slice(appJs.indexOf("---- collage"));
   assert.match(collage, /skewY\(/);

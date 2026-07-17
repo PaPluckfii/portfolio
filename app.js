@@ -227,8 +227,15 @@ $("#projects-fallback").innerHTML = APPS
     // scatter transform displaces its bounding box, which would shift the
     // trigger point by the scatter offset itself. And no pre-trigger
     // rootMargin: the entrance must start in view, not finish off-screen.
+    const revealShot = async (shot) => {
+      const img = shot.querySelector("img");
+      // A lazy image can intersect before its pixels are decoded. Starting the
+      // transition then makes it finish invisibly and pop in already sorted.
+      try { await img.decode(); } catch {}
+      requestAnimationFrame(() => requestAnimationFrame(() => img.classList.add("in")));
+    };
     const imgIO = new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) { e.target.querySelector("img").classList.add("in"); imgIO.unobserve(e.target); }
+      for (const e of entries) if (e.isIntersecting) { revealShot(e.target); imgIO.unobserve(e.target); }
     }, { threshold: 0.15 });
     collage.querySelectorAll(".collage-shot").forEach((shot, i) => {
       const img = shot.querySelector("img");
